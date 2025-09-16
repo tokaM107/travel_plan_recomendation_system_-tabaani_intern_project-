@@ -1,5 +1,5 @@
 # Use official Python image
-FROM python:3.11
+FROM python:3.11-slim
 
 # Set work directory inside container
 WORKDIR /app
@@ -14,4 +14,4 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
 
 # Run your script by default
-CMD ["python", "main.py"]
+CMD ["python", "google_agent_database.py"]
