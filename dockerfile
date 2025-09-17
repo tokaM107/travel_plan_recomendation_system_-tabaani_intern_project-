@@ -14,4 +14,4 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
 
 # Run your script by default
-CMD ["python", "main.py"]
+CMD ["python", "google_agent_database.py"]
