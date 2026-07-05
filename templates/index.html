@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Travel Plan Survey</title>
+    <link rel="stylesheet" href="{{ url_for('static', path='styles.css') }}">
+</head>
+<body>
+    <main class="shell">
+        <section class="hero">
+            <p class="eyebrow">Tabaani travel planner</p>
+            <h1>Create a trip plan from a 6-question survey.</h1>
+            <p class="lede">Submit your destination, cities, dates, interests, companions, and budget. The app saves your answers to CSV, runs the pipeline, and generates a downloadable <span>database.csv</span>.</p>
+        </section>
+
+        <section class="card form-card">
+            {% if error %}
+            <div class="alert">{{ error }}</div>
+            {% endif %}
+
+            <form method="post" action="/generate" class="survey-form" id="survey-form">
+                <div class="field-grid">
+                    <label>
+                        <span>1. Destination country</span>
+                        <input type="text" name="country" placeholder="Morocco" value="{{ form.country or '' }}" required>
+                    </label>
+
+                    <label>
+                        <span>2. Cities within the country</span>
+                        <textarea name="cities" rows="3" placeholder="Casablanca, Marrakesh" required>{{ form.cities or '' }}</textarea>
+                    </label>
+
+                    <label>
+                        <span>3. Start date</span>
+                        <input type="date" name="start_date" value="{{ form.start_date or '' }}" required>
+                    </label>
+
+                    <label>
+                        <span>3. End date</span>
+                        <input type="date" name="end_date" value="{{ form.end_date or '' }}" required>
+                    </label>
+
+                    <label>
+                        <span>4. Interests</span>
+                        <textarea name="interests" rows="3" placeholder="historical, adventure" required>{{ form.interests or '' }}</textarea>
+                    </label>
+
+                    <label>
+                        <span>5. Travel companions</span>
+                        <input type="text" name="companions" placeholder="Family" value="{{ form.companions or '' }}" required>
+                    </label>
+
+                    <label>
+                        <span>6. Budget type</span>
+                        <select name="budget" required>
+                            {% set selected_budget = form.budget or '' %}
+                            <option value="" disabled {% if not selected_budget %}selected{% endif %}>Choose a budget</option>
+                            <option value="Budget-friendly" {% if selected_budget == 'Budget-friendly' %}selected{% endif %}>Budget-friendly</option>
+                            <option value="Mid-range" {% if selected_budget == 'Mid-range' %}selected{% endif %}>Mid-range</option>
+                            <option value="Luxury" {% if selected_budget == 'Luxury' %}selected{% endif %}>Luxury</option>
+                        </select>
+                    </label>
+                </div>
+
+                <button type="submit" class="primary-btn submit-btn" id="submit-button">
+                    <span class="btn-label">Generate travel database</span>
+                    <span class="btn-spinner" aria-hidden="true"></span>
+                </button>
+            </form>
+
+            <div class="loading-overlay" id="loading-overlay" aria-hidden="true">
+                <div class="loading-card">
+                    <div class="loading-spinner" aria-hidden="true"></div>
+                    <strong>Generating your travel plan</strong>
+                    <p>This can take a few moments while the pipeline writes the CSV and extracts the plan.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        const surveyForm = document.getElementById('survey-form');
+        const loadingOverlay = document.getElementById('loading-overlay');
+        const submitButton = document.getElementById('submit-button');
+
+        surveyForm.addEventListener('submit', () => {
+            document.body.classList.add('is-loading');
+            submitButton.disabled = true;
+            submitButton.setAttribute('aria-busy', 'true');
+            loadingOverlay.setAttribute('aria-hidden', 'false');
+        });
+    </script>
+</body>
+</html>
