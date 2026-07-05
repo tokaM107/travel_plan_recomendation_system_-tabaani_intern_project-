@@ -13,5 +13,5 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy project files
 COPY . .
 
-# Run your script by default
-CMD ["python", "google_agent_database.py"]
+# Run the FastAPI app by default
+CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "8000"]
