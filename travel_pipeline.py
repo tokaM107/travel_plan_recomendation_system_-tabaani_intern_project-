@@ -171,7 +171,7 @@ def generate_plan_text(prompt: str, survey: dict[str, str], google_api_key: str 
     try:
         from langchain_google_genai import ChatGoogleGenerativeAI
 
-        chat = ChatGoogleGenerativeAI(model="gemini-2.0-flash", google_api_key=api_key)
+        chat = ChatGoogleGenerativeAI(model="gemini-2.5-flash", google_api_key=api_key)
         response = chat.invoke(prompt)
         return getattr(response, "content", str(response))
     except Exception:
