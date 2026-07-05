@@ -10,6 +10,12 @@ from fastapi.templating import Jinja2Templates
 
 from travel_pipeline import DEFAULT_OUTPUT_CSV, DEFAULT_SURVEY_CSV, generate_travel_database, write_survey_to_csv
 
+import nltk
+
+try:
+    nltk.data.find('taggers/averaged_perceptron_tagger_eng')
+except LookupError:
+    nltk.download('averaged_perceptron_tagger_eng')
 
 BASE_DIR = Path(__file__).resolve().parent
 templates = Jinja2Templates(directory=str(BASE_DIR / "templates"))
