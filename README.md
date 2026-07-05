@@ -260,11 +260,15 @@ The idea is to extract the same structured information (activities, locations, b
 ## Project Structure
 
 📂 **travel-plan-recommendation-system**  
+ ┣ 📜 **app.py** – FastAPI web app for the 6-question travel survey.
+ ┣ 📜 **travel_pipeline.py** – Shared pipeline that saves the survey CSV and generates database.csv.
  ┣ 📜 **google_agent_database.py** – Handles Google search queries and data extraction.  
  ┣ 📜 **youtube_agent_database.py** – Fetches travel-related content and insights from YouTube.  
  ┣ 📜 **for_prompt.csv** – Stores user survey answers for generating personalized plans.  
  ┣ 📜 **plan.txt** – Contains raw scraped text or Gemini-generated travel suggestions.  
  ┣ 📜 **database.csv** – Final output file storing the recommended travel plan.  
+ ┣ 📜 **templates/** – HTML pages for the survey form and results view.
+ ┣ 📜 **static/** – CSS for the FastAPI web UI.
  ┣ 📜 **requirements.txt** – Lists Python dependencies for the project.  
  ┣ 📜 **Dockerfile** – Configuration file to build and run the project inside a Docker container.  
  ┣ 📜 **README.md** – Documentation and instructions for the project.  
@@ -284,14 +288,14 @@ The idea is to extract the same structured information (activities, locations, b
 2. Install dependencies:
 ```bash
 pip install -r requirements.txt
-Run the script:
-python main.py
 ```
 
-3. Run the script:
-``` bash
-python google_agent_database.py
-python youtube_agent_database.py
+3. Start the web app:
+```bash
+uvicorn app:app --reload
+```
+
+4. Open the app in your browser and submit the survey. The answers are saved to `for_prompt.csv`, the pipeline writes `database.csv`, and the result page provides a download link.
 ```
 
 
@@ -309,6 +313,8 @@ python youtube_agent_database.py
 ```bash
 docker run --rm travel-plan-recommendation-system
 ```
+
+The container now starts the FastAPI server on port `8000`.
 
 ## Future work 
 1. continue working on web scraping and not rely on gemini 
