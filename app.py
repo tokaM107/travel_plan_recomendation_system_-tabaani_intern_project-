@@ -12,10 +12,19 @@ from travel_pipeline import DEFAULT_OUTPUT_CSV, DEFAULT_SURVEY_CSV, generate_tra
 
 import nltk
 
-try:
-    nltk.data.find('taggers/averaged_perceptron_tagger_eng')
-except LookupError:
-    nltk.download('averaged_perceptron_tagger_eng')
+import nltk
+
+nltk_resources = [
+    ('taggers/averaged_perceptron_tagger_eng', 'averaged_perceptron_tagger_eng'),
+    ('chunkers/maxent_ne_chunker_tab', 'maxent_ne_chunker_tab'),
+    ('corpora/words', 'words')
+]
+
+for path, package in nltk_resources:
+    try:
+        nltk.data.find(path)
+    except LookupError:
+        nltk.download(package)
 
 BASE_DIR = Path(__file__).resolve().parent
 templates = Jinja2Templates(directory=str(BASE_DIR / "templates"))
